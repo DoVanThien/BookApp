@@ -21,6 +21,8 @@ import NotFoundScreen from "../screens/NotFoundScreen";
 import SearchScreen from "../screens/SearchScreen/SearchScreen";
 import MyBooksScreen from "../screens/MyBooksScreen/MyBooksScreen";
 import BookDetail from "../screens/BookDetail";
+import BookPages from "../screens/BookPages";
+
 import {
   RootStackParamList,
   RootTabParamList,
@@ -66,7 +68,7 @@ function RootNavigator() {
         <Stack.Screen
           name="Modal"
           component={ModalScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, fullScreenGestureEnabled: true}}
         />
       </Stack.Group>
       <Stack.Screen
@@ -74,6 +76,11 @@ function RootNavigator() {
         component={BookDetail}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+      name="BookPages"
+      component={BookPages}
+      options={{ headerShown: false }}
+    />
     </Stack.Navigator>
   );
 }

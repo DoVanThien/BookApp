@@ -30,6 +30,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       Modal: 'modal',
       NotFound: '*',
       BookDetail: '*',
+      BookPages: '*',
     },
   },
 };
