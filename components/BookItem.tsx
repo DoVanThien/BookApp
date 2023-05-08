@@ -8,9 +8,13 @@ import {
 } from "react-native";
 import React from "react";
 import { useMyBooks } from "../context/MyBooksProvider";
-import { Foundation, MaterialIcons, FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from '@react-navigation/native';
-
+import {
+  Foundation,
+  MaterialIcons,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 import Colors from "../constants/Colors";
 import { COLORS, FONTS, SIZES } from "../constants";
@@ -19,9 +23,7 @@ type BookItemProps = {
   book: Book;
 };
 
-const BookItem = (
-  { book }: BookItemProps,
-) => {
+const BookItem = ({ book }: BookItemProps) => {
   const { isBookSaved, onToggleSaved } = useMyBooks();
   const saved = isBookSaved(book);
   const navigation = useNavigation();
@@ -29,24 +31,37 @@ const BookItem = (
   return (
     <View style={styles.container}>
       <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('BookDetail', {
-          book: book
-        });
-      }}
+        onPress={() => {
+          navigation.navigate("BookDetail", {
+            book: book,
+          });
+        }}
       >
-        <Image
-          source={{ uri: book.image }}
-          resizeMode="cover"
-          style={styles.image}
-        />
+        {book.image ? (
+          <Image
+            source={{ uri: book.image }}
+            resizeMode="cover"
+            style={styles.image}
+          />
+        ) : (
+          <View
+            style={[
+              {
+                backgroundColor: "white",
+              },
+              styles.image,
+            ]}
+          />
+        )}
       </TouchableOpacity>
 
       <View style={styles.contentContainer}>
         <Text numberOfLines={1} ellipsizeMode="tail" style={styles.bookTitle}>
           {book.title}
         </Text>
-        <Text style={styles.bookAuthors}>by {book.authors?.join(", ")}</Text>
+        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.bookAuthors}>
+          by {book.authors?.join(", ")}
+        </Text>
 
         <View
           style={{
@@ -67,7 +82,11 @@ const BookItem = (
               paddingHorizontal: SIZES.radius,
             }}
           >
-            {book.pageNumber}
+            {book.pageNumber ? (
+              book.pageNumber
+            ) : (
+              <MaterialCommunityIcons name="null" size={15} color="white" />
+            )}
           </Text>
 
           <MaterialIcons name="star-rate" size={15} color={COLORS.lightGray2} />
@@ -78,7 +97,11 @@ const BookItem = (
               paddingHorizontal: SIZES.radius,
             }}
           >
-            {book.rating}
+            {book.rating ? (
+              book.rating
+            ) : (
+              <MaterialCommunityIcons name="null" size={15} color="white" />
+            )}
           </Text>
         </View>
 

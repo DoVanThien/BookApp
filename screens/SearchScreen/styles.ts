@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SIZES } from "../../constants";
+import { COLORS, FONTS, SIZES } from "../../constants";
 
 export default StyleSheet.create({
   container: {
@@ -41,7 +41,7 @@ export default StyleSheet.create({
     alignItems: "center",
     marginHorizontal: SIZES.padding,
     marginVertical: SIZES.padding / 2,
-    paddingTop: SIZES.padding / 2,
+    paddingVertical: SIZES.padding / 2,
   },
   buttonTabs1: {
     flex: 1,
@@ -71,4 +71,30 @@ export default StyleSheet.create({
     fontWeight: "700",
     color: COLORS.lightGray,
   },
+
+  modal: {
+    flex: 1,
+    shadowColor: "#dddbcb",
+    shadowOffset: {
+      width: 0,
+      height: -10,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 20.0,
+    elevation: 24,
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#dddbcb",
+    borderRadius: 20,
+    padding: SIZES.padding,
+    paddingTop: SIZES.padding2,
+  },
+  textFilter: {
+    fontSize: 23,
+    fontWeight: "800",
+    lineHeight: 40,
+  }
 });

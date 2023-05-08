@@ -68,7 +68,7 @@ function RootNavigator() {
         <Stack.Screen
           name="Modal"
           component={ModalScreen}
-          options={{ headerShown: false, fullScreenGestureEnabled: true}}
+          options={{ headerShown: false }}
         />
       </Stack.Group>
       <Stack.Screen

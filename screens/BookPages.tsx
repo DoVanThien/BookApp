@@ -271,7 +271,7 @@ export default function BookPages({
                   </Pressable>
                 </View>
 
-                <View style={styles.font}>
+                <View style={styles.FontSelector}>
                   <OptionSelector
                     options={options}
                     defaultOptionIndex={0}
@@ -336,18 +336,17 @@ const styles = StyleSheet.create({
   ButtonFontSize: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
   },
   button: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
+    paddingVertical: 1,
+    paddingHorizontal: 40,
+    borderRadius: 8,
   },
-  font: {
+  FontSelector: {
     flex: 2,
-    marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
   },

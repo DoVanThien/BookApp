@@ -10,7 +10,11 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 import { RootStackScreenProps } from "../types";
 import { COLORS, SIZES, FONTS, Icons } from "../constants";
@@ -149,7 +153,7 @@ export default function BookDetail({
             <View
               style={{
                 flex: 5,
-                paddingTop: SIZES.padding2,
+                paddingVertical: SIZES.padding,
                 alignItems: "center",
               }}
             >
@@ -170,6 +174,7 @@ export default function BookDetail({
                 flex: 1.8,
                 alignItems: "center",
                 justifyContent: "center",
+                paddingHorizontal: SIZES.padding2,
               }}
             >
               <Text style={{ ...FONTS.h2, color: COLORS.lightGray2 }}>
@@ -193,7 +198,15 @@ export default function BookDetail({
               {/* Rating */}
               <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={{ ...FONTS.h3, color: COLORS.white }}>
-                  {book.rating}
+                  {book.rating ? (
+                    book.rating
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="null"
+                      size={15}
+                      color="#FFFFFF"
+                    />
+                  )}
                 </Text>
                 <Text style={{ ...FONTS.body4, color: COLORS.white }}>
                   Rating
@@ -211,7 +224,15 @@ export default function BookDetail({
                 }}
               >
                 <Text style={{ ...FONTS.h3, color: COLORS.white }}>
-                  {book.pageNumber}
+                  {book.pageNumber ? (
+                    book.pageNumber
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="null"
+                      size={15}
+                      color="white"
+                    />
+                  )}
                 </Text>
                 <Text style={{ ...FONTS.body4, color: COLORS.white }}>
                   Number of Page
@@ -339,8 +360,8 @@ export default function BookDetail({
                 justifyContent: "center",
               }}
               onPress={() => {
-                navigation.navigate('BookPages', {
-                  book: book
+                navigation.navigate("BookPages", {
+                  book: book,
                 });
               }}
             >

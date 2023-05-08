@@ -32,6 +32,8 @@ query SearchBooks($q: String) {
       number_of_pages_median
       language
       type
+      edition_count
+      subject
       first_sentence
     }
     numFound

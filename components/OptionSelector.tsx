@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { AntDesign, Entypo } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 interface OptionSelectorProps {
-    options: string[];
-    defaultOptionIndex: number;
-    onOptionSelected: (option: string) => void;
-  }
-  
-  const OptionSelector = ({ options, defaultOptionIndex, onOptionSelected }: OptionSelectorProps) => {
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(defaultOptionIndex);
+  options: string[];
+  defaultOptionIndex: number;
+  onOptionSelected: (option: string) => void;
+}
+
+const OptionSelector = ({
+  options,
+  defaultOptionIndex,
+  onOptionSelected,
+}: OptionSelectorProps) => {
+  const [selectedOptionIndex, setSelectedOptionIndex] =
+    useState(defaultOptionIndex);
 
   const handleOptionPress = (newIndex: any) => {
     setSelectedOptionIndex(newIndex);
@@ -32,15 +38,21 @@ interface OptionSelectorProps {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleLeftArrowPress}>
-        <Text style={styles.arrow}>{"<"}</Text>
+        <View style={styles.arrow}>
+          <Entypo name="chevron-left" size={30} color="#36454f" />
+        </View>
       </TouchableOpacity>
 
       <View style={styles.selectedOption}>
-        <Text style={styles.selectedOptionText}>{options[selectedOptionIndex].split("_")[0]}</Text>
+        <Text style={styles.selectedOptionText}>
+          {options[selectedOptionIndex].split("_")[0]}
+        </Text>
       </View>
 
       <TouchableOpacity onPress={handleRightArrowPress}>
-        <Text style={styles.arrow}>{">"}</Text>
+        <View style={styles.arrow}>
+          <Entypo name="chevron-right" size={30} color="#36454f" />
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -48,28 +60,26 @@ interface OptionSelectorProps {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f5f5f5",
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 16,
   },
   arrow: {
-    fontSize: 24,
-    color: '#000',
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
   },
   selectedOption: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   selectedOptionText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#36454f",
   },
 });
 
