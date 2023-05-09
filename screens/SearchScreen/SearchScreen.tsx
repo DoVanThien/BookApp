@@ -19,12 +19,13 @@ import {
 import { Text, View } from "../../components/Themed";
 import { useLazyQuery } from "@apollo/client";
 import BookItem from "../../components/BookItem";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { searchQuery } from "./queries";
 import { parseBook } from "../../services/BookService";
 import styles from "./styles";
 import { COLORS, FONTS, Icons, SIZES } from "../../constants";
 import GestureRecognizer from "react-native-swipe-gestures";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SearchScreen({ navigation }: { navigation: any }) {
   const [search, setSearch] = useState("");
@@ -33,9 +34,24 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   const [provider, setProvider] = useState<BookProvider>("googleBooksSearch");
 
   const [runQuery, { data, loading, error }] = useLazyQuery(searchQuery);
-  const [profile, setProfile] = useState("Do Thien");
 
   const [sortBy, setSortBy] = useState("");
+
+  // const [profile1, setProfile1] = useState<string>("");
+  // const [profile2, setProfile2] = useState<string>("");  
+  // const getFirstName = async (): Promise<string | null> => {
+  //   try {
+  //     const firstName = await AsyncStorage.getItem('firstName');
+  //     return firstName;
+  //   } catch (error) {
+  //     console.log(error);
+  //     return null;
+  //   }
+  // };
+
+  // getFirstName().then((firstName) => {
+  //   console.log(`The first name is: ${firstName}`);
+  // });
 
   function sortAscendingBooksByTitle(books: any) {
     if (provider == "googleBooksSearch") {
@@ -200,7 +216,7 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
                 Good Morning
               </Text>
               <Text style={{ ...FONTS.h2, color: COLORS.white }}>
-                {profile}
+                Do Thien
               </Text>
             </View>
           </View>

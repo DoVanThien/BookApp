@@ -1,5 +1,4 @@
-export const TEXT1 = 
-    `"An error is a denial of reality, but mistakes are mere mental malfunctionings. In an emergency, a mistake may be made because of the need for precipitate action. There is no time to choose the best course: something must be done at once. Most mistakes, however, are made without any such exterior pressure. One accepts the first-imagined solution to a problem without examining it, either out of an urgent desire to avoid the labor of thinking, or out of impassioned reluctance to think about the matter at hand when prettier and more pleasurable other things can be contemplated....
+export const TEXT1 = `"An error is a denial of reality, but mistakes are mere mental malfunctionings. In an emergency, a mistake may be made because of the need for precipitate action. There is no time to choose the best course: something must be done at once. Most mistakes, however, are made without any such exterior pressure. One accepts the first-imagined solution to a problem without examining it, either out of an urgent desire to avoid the labor of thinking, or out of impassioned reluctance to think about the matter at hand when prettier and more pleasurable other things can be contemplated....
 
 The Practice of Thinking
 Fitzgerald
@@ -21,7 +20,10 @@ But after an instant Calhoun stared about him as the vision-screens came to life
 This, obviously, was not what he'd expected. These days ships do not stop to view the universe from the monstrous loneliness which is Between-the-Stars. All ships go into overdrive as near their port of departure as they can. Usually it is something like five or six planetary diameters out from the local spaceport. All ships come out of overdrive as near their destinations as computation makes possible. They do not stop to look at scenery on the way. It isn't good for humans to look at stars when there are only stars to see. The sight has a tendency to make them feel small. Too small. Men have been known to come out of such an experience gibbering.
 
 Calhoun scowled at the sight of Between-the-Stars. This was not good. But he wasn't frightened—not yet. There should have been a flaming sun somewhere nearby, and there should have been bright crescents or half-disks or mottled cloudy planets swimming within view. The sun should have been the star Merida, and Calhoun should land in commonplace fashion on Merida II and make a routine planetary health check on a settled, complacent population, and presently he should head back to Med Headquarters with a report containing absolutely nothing of importance. But he couldn't do any of these things. He was in purely empty space. It was appalling.
-"`;
+"
+
+
+`;
 
 const appText = { TEXT1 };
 

@@ -3,19 +3,16 @@ import {
   TouchableOpacity,
   View,
   Image,
-  SafeAreaView,
   StyleSheet,
-  Animated,
   ScrollView,
   Modal,
   Pressable,
 } from "react-native";
 import { COLORS, FONTS, Icons, SIZES, TEXT1 } from "../constants";
-import navigation from "../navigation";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import React from "react";
 import GestureRecognizer from "react-native-swipe-gestures";
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import * as Brightness from "expo-brightness";
 import OptionSelector from "../components/OptionSelector";
@@ -38,7 +35,7 @@ export default function BookPages({
   let [fontsLoaded] = useFonts({
     BalsamiqSans_400Regular,
     SourceSansPro_400Regular_Italic,
-    Inter_400Regular
+    Inter_400Regular,
   });
 
   const [book, setBook] = useState<any>([]);
@@ -56,28 +53,41 @@ export default function BookPages({
   const [brightness, setBrightness] = React.useState(1);
   const [sizeOfText, setSizeOfText] = React.useState(SIZES.body2);
 
-  const options = ["BalsamiqSans_400Regular", "SourceSansPro_400Regular_Italic", "Inter_400Regular"];
+  const options = [
+    "BalsamiqSans_400Regular",
+    "SourceSansPro_400Regular_Italic",
+    "Inter_400Regular",
+  ];
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const handleOptionSelected = (option: any) => {
     setSelectedOption(option);
   };
 
-  const indicator = new Animated.Value(0);
+  // button back to top
+  const scrollViewRef = useRef<ScrollView>(null);
+  const buttonRef = useRef<TouchableOpacity>(null);
 
-  const indicatorSize =
-    scrollViewWholeHeight > scrollViewVisibleHeight
-      ? (scrollViewVisibleHeight * scrollViewVisibleHeight) /
-        scrollViewWholeHeight
-      : scrollViewVisibleHeight;
+  const handleScroll = (event: any) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    if (buttonRef.current) {
+      if (offsetY > 0) {
+        // Show the button when scrolled down
+        buttonRef.current.setNativeProps({ style: { opacity: 0.6 } });
+      } else {
+        // Hide the button when at the top of the screen
+        buttonRef.current.setNativeProps({ style: { opacity: 0 } });
+      }
+    }
+  };
 
-  const difference =
-    scrollViewVisibleHeight > indicatorSize
-      ? scrollViewVisibleHeight - indicatorSize
-      : 1;
+  const handlePress = () => {
+    // Scroll back to the top of the screen
+    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+  };
 
   if (book && !fontsLoaded) {
     return <AppLoading />;
-    } else {
+  } else {
     return (
       <View style={styles.container}>
         <View
@@ -141,56 +151,41 @@ export default function BookPages({
             style={{ flex: 1, flexDirection: "row", padding: SIZES.padding }}
           >
             <ScrollView
-              contentContainerStyle={{ paddingRight: SIZES.padding2 / 2 }}
-              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingRight: 0 }}
+              showsVerticalScrollIndicator={true}
+              indicatorStyle="white"
               scrollEventThrottle={16}
-              onContentSizeChange={(width, height) => {
-                setScrollViewWholeHeight(height);
-              }}
-              onLayout={({
-                nativeEvent: {
-                  layout: { x, y, width, height },
-                },
-              }) => {
-                setScrollViewVisibleHeight(height);
-              }}
-              onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: indicator } } }],
-                { useNativeDriver: false }
-              )}
+              // onContentSizeChange={(width, height) => {
+              //   setScrollViewWholeHeight(height);
+              // }}
+              // onLayout={({
+              //   nativeEvent: {
+              //     layout: { x, y, width, height },
+              //   },
+              // }) => {
+              //   setScrollViewVisibleHeight(height);
+              // }}
+              ref={scrollViewRef}
+              onScroll={handleScroll}
             >
-              <Text style={{ fontSize: sizeOfText, color: COLORS.lightGray2, fontFamily: selectedOption }}>
+              <Text
+                style={{
+                  fontSize: sizeOfText,
+                  color: COLORS.lightGray2,
+                  fontFamily: selectedOption,
+                }}
+              >
                 {TEXT1}
               </Text>
             </ScrollView>
 
-            <View
-              style={{
-                width: 4,
-                height: "100%",
-                backgroundColor: COLORS.gray1,
-              }}
+            <TouchableOpacity
+              ref={buttonRef}
+              style={styles.backToTopButton}
+              onPress={handlePress}
             >
-              <Animated.View
-                style={{
-                  width: 4,
-                  height: indicatorSize,
-                  backgroundColor: COLORS.lightGray4,
-                  transform: [
-                    {
-                      translateY: Animated.multiply(
-                        indicator,
-                        scrollViewVisibleHeight / scrollViewWholeHeight
-                      ).interpolate({
-                        inputRange: [0, difference],
-                        outputRange: [0, difference],
-                        extrapolate: "clamp",
-                      }),
-                    },
-                  ],
-                }}
-              />
-            </View>
+              <AntDesign name="arrowup" size={30} color="black" />
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -349,5 +344,16 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: "center",
     justifyContent: "center",
+  },
+  backToTopButton: {
+    position: "absolute",
+    right: "48%",
+    bottom: 30,
+    backgroundColor: COLORS.white,
+    color: COLORS.lightGray,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    opacity: 0,
   },
 });
