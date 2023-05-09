@@ -17,6 +17,7 @@ import Slider from "@react-native-community/slider";
 import * as Brightness from "expo-brightness";
 import OptionSelector from "../components/OptionSelector";
 
+
 import AppLoading from "expo-app-loading";
 import {
   useFonts,
@@ -24,6 +25,7 @@ import {
 } from "@expo-google-fonts/balsamiq-sans";
 import { SourceSansPro_400Regular_Italic } from "@expo-google-fonts/source-sans-pro";
 import { Inter_400Regular } from "@expo-google-fonts/inter";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function BookPages({
   navigation,
@@ -46,10 +48,6 @@ export default function BookPages({
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [scrollViewWholeHeight, setScrollViewWholeHeight] = React.useState(1);
-  const [scrollViewVisibleHeight, setScrollViewVisibleHeight] =
-    React.useState(0);
-
   const [brightness, setBrightness] = React.useState(1);
   const [sizeOfText, setSizeOfText] = React.useState(SIZES.body2);
 
@@ -60,10 +58,56 @@ export default function BookPages({
   ];
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const handleOptionSelected = (option: any) => {
-    setSelectedOption(option);
+    handleSelectedOptionChange(option);
   };
+  const handleBrightnessChange = async (brightness: any) => {
+    setBrightness(brightness);
+    await AsyncStorage.setItem('brightness', JSON.stringify(brightness));
+  };
+  
+  const handleSizeOfTextChange = async (size: any) => {
+    setSizeOfText(size);
+    await AsyncStorage.setItem('sizeOfText', JSON.stringify(size));
+  };
+  
+  const handleSelectedOptionChange = async (option: any) => {
+    setSelectedOption(option);
+    await AsyncStorage.setItem('selectedOption', option);
+  };
+  React.useEffect(() => {
+    const loadSavedValues = async () => {
+      try {
+        const brightnessValue = await AsyncStorage.getItem('brightness');
+        const sizeValue = await AsyncStorage.getItem('sizeOfText');
+        const optionValue = await AsyncStorage.getItem('selectedOption');
+  
+        if (brightnessValue !== null) {
+          setBrightness(JSON.parse(brightnessValue));
+        } else {
+          setBrightness(1); // default value
+        }
+  
+        if (sizeValue !== null) {
+          setSizeOfText(JSON.parse(sizeValue));
+        } else {
+          setSizeOfText(SIZES.body2); // default value
+        }
+  
+        if (optionValue !== null) {
+          setSelectedOption(optionValue);
+        } else {
+          setSelectedOption(options[0]); // default value
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+  
+    loadSavedValues();
+  }, []);
+  
 
-  // button back to top
+  //button back to top
   const scrollViewRef = useRef<ScrollView>(null);
   const buttonRef = useRef<TouchableOpacity>(null);
 
@@ -71,17 +115,14 @@ export default function BookPages({
     const offsetY = event.nativeEvent.contentOffset.y;
     if (buttonRef.current) {
       if (offsetY > 0) {
-        // Show the button when scrolled down
         buttonRef.current.setNativeProps({ style: { opacity: 0.6 } });
       } else {
-        // Hide the button when at the top of the screen
         buttonRef.current.setNativeProps({ style: { opacity: 0 } });
       }
     }
   };
 
   const handlePress = () => {
-    // Scroll back to the top of the screen
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
   };
 
@@ -155,16 +196,6 @@ export default function BookPages({
               showsVerticalScrollIndicator={true}
               indicatorStyle="white"
               scrollEventThrottle={16}
-              // onContentSizeChange={(width, height) => {
-              //   setScrollViewWholeHeight(height);
-              // }}
-              // onLayout={({
-              //   nativeEvent: {
-              //     layout: { x, y, width, height },
-              //   },
-              // }) => {
-              //   setScrollViewVisibleHeight(height);
-              // }}
               ref={scrollViewRef}
               onScroll={handleScroll}
             >
@@ -235,7 +266,7 @@ export default function BookPages({
                   <Pressable
                     style={[styles.button, { backgroundColor: "#1E5F74" }]}
                     onPress={() => {
-                      setSizeOfText(SIZES.body3);
+                      handleSizeOfTextChange(SIZES.body3);
                     }}
                   >
                     <Text style={{ ...FONTS.body3, color: COLORS.white }}>
@@ -246,7 +277,7 @@ export default function BookPages({
                   <Pressable
                     style={[styles.button, { backgroundColor: "#133B5C" }]}
                     onPress={() => {
-                      setSizeOfText(SIZES.body2);
+                      handleSizeOfTextChange(SIZES.body2);
                     }}
                   >
                     <Text style={{ ...FONTS.body2, color: COLORS.white }}>
@@ -257,7 +288,7 @@ export default function BookPages({
                   <Pressable
                     style={[styles.button, { backgroundColor: "#1D2D50" }]}
                     onPress={() => {
-                      setSizeOfText(SIZES.body1);
+                      handleSizeOfTextChange(SIZES.body1);
                     }}
                   >
                     <Text style={{ ...FONTS.body1, color: COLORS.white }}>
@@ -269,7 +300,7 @@ export default function BookPages({
                 <View style={styles.FontSelector}>
                   <OptionSelector
                     options={options}
-                    defaultOptionIndex={0}
+                    defaultOptionIndex={options.indexOf(selectedOption)}
                     onOptionSelected={handleOptionSelected}
                   />
                 </View>

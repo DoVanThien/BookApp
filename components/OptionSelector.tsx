@@ -16,6 +16,13 @@ const OptionSelector = ({
   const [selectedOptionIndex, setSelectedOptionIndex] =
     useState(defaultOptionIndex);
 
+  React.useEffect(() => {
+    if (selectedOptionIndex !== defaultOptionIndex) {
+      onOptionSelected(options[selectedOptionIndex]);
+    }
+  }, [selectedOptionIndex]);
+  
+
   const handleOptionPress = (newIndex: any) => {
     setSelectedOptionIndex(newIndex);
     onOptionSelected(options[newIndex]);
