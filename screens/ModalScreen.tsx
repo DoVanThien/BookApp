@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function ModalScreen() {
+export default function ModalScreen(navigation: any) {
   const [firstName, setFirstName] = useState("Do");
   const [lastName, setLastName] = useState("Thien");
 

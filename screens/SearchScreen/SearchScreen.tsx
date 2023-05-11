@@ -37,21 +37,36 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
 
   const [sortBy, setSortBy] = useState("");
 
-  // const [profile1, setProfile1] = useState<string>("");
-  // const [profile2, setProfile2] = useState<string>("");  
-  // const getFirstName = async (): Promise<string | null> => {
-  //   try {
-  //     const firstName = await AsyncStorage.getItem('firstName');
-  //     return firstName;
-  //   } catch (error) {
-  //     console.log(error);
-  //     return null;
-  //   }
-  // };
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [reloadTime, setReloadTime] = useState(0);
 
-  // getFirstName().then((firstName) => {
-  //   console.log(`The first name is: ${firstName}`);
-  // });
+  useEffect(() => {
+    async function getData() {
+      try {
+        const firstNameValue = await AsyncStorage.getItem('userFirstName');
+        const lastNameValue = await AsyncStorage.getItem('userLastName');
+
+        if (firstNameValue !== null) {
+          setFirstName(firstNameValue);
+        }
+
+        if (lastNameValue !== null) {
+          setLastName(lastNameValue);
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    getData();
+    const intervalId = setInterval(() => {
+      setReloadTime(Date.now());
+    }, 1000);
+  
+    return () => clearInterval(intervalId);
+  }, [reloadTime]);
+
 
   function sortAscendingBooksByTitle(books: any) {
     if (provider == "googleBooksSearch") {
@@ -216,7 +231,7 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
                 Good Morning
               </Text>
               <Text style={{ ...FONTS.h2, color: COLORS.white }}>
-                Do Thien
+              {firstName} {lastName}
               </Text>
             </View>
           </View>
