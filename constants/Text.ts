@@ -1,30 +1,45 @@
-export const TEXT1 = `"An error is a denial of reality, but mistakes are mere mental malfunctionings. In an emergency, a mistake may be made because of the need for precipitate action. There is no time to choose the best course: something must be done at once. Most mistakes, however, are made without any such exterior pressure. One accepts the first-imagined solution to a problem without examining it, either out of an urgent desire to avoid the labor of thinking, or out of impassioned reluctance to think about the matter at hand when prettier and more pleasurable other things can be contemplated....
+export const TEXT1 = `Chapter 1: The Unlikely Crew 
 
-The Practice of Thinking
-Fitzgerald
+Once upon a time in the Golden Age of Piracy, there was a cunning sea captain named Redbeard who was feared by sailors and pirates alike. Redbeard and his motley crew of seathieves sailed the seas, searching for treasures stolen from the world's wealthiest kingdoms. One day, while anchored near a distant island, the crew of the Black Pearl stumbled upon an age-old map inked in unknown languages, which seemed to promise a hidden treasure beyond compare.
 
-It turned out afterward that somebody had punched the wrong button in a computer. It was in a matter in which mistakes are not permissible, but just as nothing can be manufactured without an ordinary hammer figuring somewhere in the making or the making-ready-to-make, so nothing can be done without a fallible human operating at some stage of the proceedings. And humans make mistakes casually, off-handedly, with impartial lack of malice, and unpredictability. So....
+The map, tattered and worn, was tricky to decipher, but after studying it for days on end, Redbeard uncovered its secrets. It pointed to an isolated island, where the mythical treasure of the Pirate King rested, a fortune including gold, precious gems, and powerful relics that would ensure their place among the most notorious pirates in history.
 
-Calhoun heard the tape-speaker say, When the gong sounds, breakout will follow in five seconds. Then it made solemn ticking noises while Calhoun yawned and put aside the book, The Practice of Thinking, that he'd been studying. Study was a necessity in his profession. Besides, it helped to pass the time in overdrive. He went to the control-desk chair and strapped in. Murgatroyd the tormal uncoiled his tail from about his nose and stood up from where he was catching twenty winks. He padded to the place under Calhoun's chair where there were things to grab hold of, if necessary, with four black paws and a prehensile tail.
+But the journey would not be easy, as the treasure was said to be guarded by dark forces and treacherous trials. Undeterred, Redbeard rallied his crew, promising a share of the bounty to each member who would follow him into the unknown. And so, the Black Pearl set sail, leaving the safety of familiar waters behind.
 
-Chee, said Murgatroyd conversationally in his shrill treble.
+Their journey began with uncharacteristic smooth sailing, as though the seas themselves were welcoming the thieves. But soon enough, the crew faced their first test – a monstrous storm that threatened to sink the ship and swallow them all. Redbeard led his crew with unmatched bravery, barking orders and maneuvering the ship with skillful precision.
 
-I agree, Calhoun told him gravely. Stone walls do not a prison make, nor Med Ship hulls a cage. But it will be good to get outside for a change.
+Against all odds, they emerged from the storm with their ship battered but their spirit unbroken. The journey continued through dense fog and treacherous waters, with the crew enduring attacks from vicious sea creatures and rival pirates. Throughout it all, Redbeard never faltered, earning the loyalty and devotion of his crew.
 
-The tape-speaker ticked and tocked and ticked and tocked. There was the sound of a gong. A voice said measuredly, Five—four—three—two—one—
+On a moonless night, as the Black Pearl continued its voyage, Redbeard gathered his crew for a rare feast, treating them to the finest rum and exotic foods they had plundered along the way. He stood on the table, bellowing tales of great conquests, mockingly impersonating defeated foes, and rallying their spirits with songs of camaraderie.
 
-The ship came out of overdrive. Calhoun winced and swallowed. Nobody ever gets used to going into overdrive or coming out of it. One is hideously dizzy for an instant, and his stomach has a brief but violent urge to upchuck, and no matter how often one has experienced it, it is necessary to fight a flash of irrational panic caused by the two sensations together.
+As the night wore on, the crew ate and drank their fill, growing louder and more boisterous with every passing hour. Redbeard's laughter echoed across the waves, and for a brief moment, as the firelight flickered in the darkness, the hardships of their journey seemed worlds away.`;
 
-But after an instant Calhoun stared about him as the vision-screens came to life. They showed the cosmos outside the Med Ship. It was a perfectly normal cosmos—not at all the cosmos of overdrive—but it looked extremely wrong to Calhoun. He and Murgatroyd and the Med Ship were in emptiness. There were stars on every hand, and they were of every conceivable color and degree of brightness. But every one of them was a point of light, and a point only.
+export const TEXT2 = `Chapter 2: The Ominous Island
 
-This, obviously, was not what he'd expected. These days ships do not stop to view the universe from the monstrous loneliness which is Between-the-Stars. All ships go into overdrive as near their port of departure as they can. Usually it is something like five or six planetary diameters out from the local spaceport. All ships come out of overdrive as near their destinations as computation makes possible. They do not stop to look at scenery on the way. It isn't good for humans to look at stars when there are only stars to see. The sight has a tendency to make them feel small. Too small. Men have been known to come out of such an experience gibbering.
+After months of sailing and countless obstacles, the crew of the Black Pearl finally reached the mist-shrouded island depicted on the ancient map. The approach was fraught with danger, as rocky outcroppings loomed out of the fog, threatening to impale their pirate vessel.
 
-Calhoun scowled at the sight of Between-the-Stars. This was not good. But he wasn't frightened—not yet. There should have been a flaming sun somewhere nearby, and there should have been bright crescents or half-disks or mottled cloudy planets swimming within view. The sun should have been the star Merida, and Calhoun should land in commonplace fashion on Merida II and make a routine planetary health check on a settled, complacent population, and presently he should head back to Med Headquarters with a report containing absolutely nothing of importance. But he couldn't do any of these things. He was in purely empty space. It was appalling.
-"
+Redbeard personally took control of the ship's wheel, his steely gaze piercing the fog as he navigated the treacherous channel. The crew held their breath, knowing that one wrong move could send them and their ship to a watery grave. But amid the tension, they trusted in their captain's prowess.
 
+With a splash, the anchor was lowered, and Redbeard led a small party, including his first mate, Sly Sam, the quartermaster, Ironhand Alice, and the ship's cook, Blind Benny, ashore to search for the treasure. The island was a dreadful place, filled with gnarled trees and the bones of those who had perished on the same quest. Yet, the captain and his crew pressed onwards.
 
-`;
+Their journey through the island was riddled with challenges, from navigating treacherous cliffs to fending off monstrous creatures lurking in the shadows. But what proved most testing was the Black Lagoon, a treacherous body of water where thick fog hid deadly, unseen perils. Relying on Blind Benny's keen senses, they navigated the lagoon with a tense mixture of resourcefulness and luck.
 
-const appText = { TEXT1 };
+Deep within the island's heart, they discovered an ancient temple built in honor of the Pirate King. The entrance was guarded by a riddle, the answer to which Redbeard spent many hours contemplating. Ultimately, with the combined wisdom of his crew, they unlocked the entrance to the temple, revealing a path that descended into the depths of the island.`;
+
+export const TEXT3 = `Chapter 3: The Treasure of the Pirate King
+
+Descending into the heart of the island, the air grew colder and heavier, and the darkness seemed to close in around them. The walls of the temple glowed with the eerie light of luminescent fungi, casting twisted shadows on ancient murals depicting scenes of majestic battles and sprawling treasure hoards.
+
+The final challenge that awaited them at the bottom of the temple was a chamber filled with numerous treasure chests. Each chest bore a different symbol and only contained a portion of the Pirate King's treasure. To claim the treasure, they would have to choose wisely, for the wrong chests would trigger ancient curses that could doom them all.
+
+Redbeard, Sly Sam, Ironhand Alice, and Blind Benny each chose a chest to open. The air was thick with tension as one by one, they cautiously lifted the lids. All the while, the thought of curses and doom weighed heavily on their minds.
+
+When the last chest was opened, the crew held their breath, waiting for any sign of impending doom. Then Redbeard let loose a hearty laugh, reverberating through the chamber. They had chosen wisely – each chest was filled with gold, gems, and priceless artifacts.
+
+Seizing their newfound riches, the pirates began their journey back to the Black Pearl, intent on sharing the bounty with the rest of the crew. The mood was jubilant, and the treacherous island became nothing more than a distant memory as the crew rose from the depths of the temple.
+
+The wind carried them swiftly back to the familiar waters of the Caribbean. The crew of the Black Pearl, now impossibly wealthy and even more infamous, told the tale of their adventure countless times over, even as the world around them spun new yarns of legendary seathieves and their incredible journeys.`;
+
+const appText = { TEXT1, TEXT2, TEXT3 };
 
 export default appText;

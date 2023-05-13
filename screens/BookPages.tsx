@@ -8,7 +8,7 @@ import {
   Modal,
   Pressable,
 } from "react-native";
-import { COLORS, FONTS, Icons, SIZES, TEXT1 } from "../constants";
+import { COLORS, FONTS, Icons, SIZES, TEXT1, TEXT2, TEXT3 } from "../constants";
 import { useRef, useState } from "react";
 import React from "react";
 import GestureRecognizer from "react-native-swipe-gestures";
@@ -16,7 +16,7 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import * as Brightness from "expo-brightness";
 import OptionSelector from "../components/OptionSelector";
-
+import { BlurView } from "expo-blur";
 
 import AppLoading from "expo-app-loading";
 import {
@@ -25,7 +25,7 @@ import {
 } from "@expo-google-fonts/balsamiq-sans";
 import { SourceSansPro_400Regular_Italic } from "@expo-google-fonts/source-sans-pro";
 import { Inter_400Regular } from "@expo-google-fonts/inter";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function BookPages({
   navigation,
@@ -46,7 +46,20 @@ export default function BookPages({
     setBook(book);
   }, [book]);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [optionModalVisible, setOptionModalVisible] = useState(false);
+  const [chapterModalVisible, setChapterModalVisible] = useState(false);
+
+  const [selectedChapter, setSelectedChapter] = useState("Chapter1");
+  const selectChapter = (chapter: any) => {
+    setSelectedChapter(chapter);
+    setChapterModalVisible(false);
+  };
+  const chapterText =
+    selectedChapter === "Chapter1"
+      ? TEXT1
+      : selectedChapter === "Chapter2"
+      ? TEXT2
+      : TEXT3;
 
   const [brightness, setBrightness] = React.useState(1);
   const [sizeOfText, setSizeOfText] = React.useState(SIZES.body2);
@@ -62,37 +75,37 @@ export default function BookPages({
   };
   const handleBrightnessChange = async (brightness: any) => {
     setBrightness(brightness);
-    await AsyncStorage.setItem('brightness', JSON.stringify(brightness));
+    await AsyncStorage.setItem("brightness", JSON.stringify(brightness));
   };
-  
+
   const handleSizeOfTextChange = async (size: any) => {
     setSizeOfText(size);
-    await AsyncStorage.setItem('sizeOfText', JSON.stringify(size));
+    await AsyncStorage.setItem("sizeOfText", JSON.stringify(size));
   };
-  
+
   const handleSelectedOptionChange = async (option: any) => {
     setSelectedOption(option);
-    await AsyncStorage.setItem('selectedOption', option);
+    await AsyncStorage.setItem("selectedOption", option);
   };
   React.useEffect(() => {
     const loadSavedValues = async () => {
       try {
-        const brightnessValue = await AsyncStorage.getItem('brightness');
-        const sizeValue = await AsyncStorage.getItem('sizeOfText');
-        const optionValue = await AsyncStorage.getItem('selectedOption');
-  
+        const brightnessValue = await AsyncStorage.getItem("brightness");
+        const sizeValue = await AsyncStorage.getItem("sizeOfText");
+        const optionValue = await AsyncStorage.getItem("selectedOption");
+
         if (brightnessValue !== null) {
           setBrightness(JSON.parse(brightnessValue));
         } else {
           setBrightness(1); // default value
         }
-  
+
         if (sizeValue !== null) {
           setSizeOfText(JSON.parse(sizeValue));
         } else {
           setSizeOfText(SIZES.body2); // default value
         }
-  
+
         if (optionValue !== null) {
           setSelectedOption(optionValue);
         } else {
@@ -102,10 +115,9 @@ export default function BookPages({
         console.log(e);
       }
     };
-  
+
     loadSavedValues();
   }, []);
-  
 
   //button back to top
   const scrollViewRef = useRef<ScrollView>(null);
@@ -135,8 +147,9 @@ export default function BookPages({
           style={{
             flexDirection: "row",
             paddingHorizontal: SIZES.radius,
-            height: 80,
+            height: 90,
             alignItems: "flex-end",
+            justifyContent: "space-between",
           }}
         >
           <TouchableOpacity
@@ -162,7 +175,12 @@ export default function BookPages({
             }}
           >
             <Text
-              style={{ ...FONTS.h2, color: COLORS.lightGray2, maxWidth: 200 }}
+              style={{
+                ...FONTS.h2,
+                color: COLORS.lightGray2,
+                maxWidth: 230,
+                paddingLeft: 40,
+              }}
               ellipsizeMode="tail"
               numberOfLines={1}
             >
@@ -170,21 +188,44 @@ export default function BookPages({
             </Text>
           </View>
 
-          <TouchableOpacity
-            style={{ marginRight: SIZES.base }}
-            onPress={() => setModalVisible(true)}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
           >
-            <Image
-              source={Icons.more_icon}
-              resizeMode="contain"
-              style={{
-                width: 30,
-                height: 30,
-                tintColor: COLORS.lightGray2,
-                alignSelf: "flex-end",
-              }}
-            />
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={{ marginRight: SIZES.base }}
+              onPress={() => setChapterModalVisible(true)}
+            >
+              <Image
+                source={Icons.page_icon}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: COLORS.lightGray2,
+                  alignSelf: "flex-end",
+                }}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{ marginRight: SIZES.base }}
+              onPress={() => setOptionModalVisible(true)}
+            >
+              <Image
+                source={Icons.more_icon}
+                resizeMode="contain"
+                style={{
+                  width: 30,
+                  height: 30,
+                  tintColor: COLORS.lightGray2,
+                  alignSelf: "flex-end",
+                }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={{ flex: 1 }}>
@@ -206,7 +247,7 @@ export default function BookPages({
                   fontFamily: selectedOption,
                 }}
               >
-                {TEXT1}
+                {chapterText}
               </Text>
             </ScrollView>
 
@@ -221,15 +262,14 @@ export default function BookPages({
         </View>
 
         <GestureRecognizer
-          onSwipeUp={() => setModalVisible(true)}
-          onSwipeDown={() => setModalVisible(false)}
+          onSwipeDown={() => setOptionModalVisible(false)}
         >
           <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
+            visible={optionModalVisible}
             onRequestClose={() => {
-              setModalVisible(!modalVisible);
+              setOptionModalVisible(!optionModalVisible);
             }}
           >
             <View style={styles.modal}>
@@ -263,7 +303,7 @@ export default function BookPages({
                 </View>
 
                 <View style={styles.ButtonFontSize}>
-                  <Pressable
+                  <TouchableOpacity
                     style={[styles.button, { backgroundColor: "#1E5F74" }]}
                     onPress={() => {
                       handleSizeOfTextChange(SIZES.body3);
@@ -272,9 +312,9 @@ export default function BookPages({
                     <Text style={{ ...FONTS.body3, color: COLORS.white }}>
                       Abc
                     </Text>
-                  </Pressable>
+                  </TouchableOpacity>
 
-                  <Pressable
+                  <TouchableOpacity
                     style={[styles.button, { backgroundColor: "#133B5C" }]}
                     onPress={() => {
                       handleSizeOfTextChange(SIZES.body2);
@@ -283,9 +323,9 @@ export default function BookPages({
                     <Text style={{ ...FONTS.body2, color: COLORS.white }}>
                       Abc
                     </Text>
-                  </Pressable>
+                  </TouchableOpacity>
 
-                  <Pressable
+                  <TouchableOpacity
                     style={[styles.button, { backgroundColor: "#1D2D50" }]}
                     onPress={() => {
                       handleSizeOfTextChange(SIZES.body1);
@@ -294,7 +334,7 @@ export default function BookPages({
                     <Text style={{ ...FONTS.body1, color: COLORS.white }}>
                       Abc
                     </Text>
-                  </Pressable>
+                  </TouchableOpacity>
                 </View>
 
                 <View style={styles.FontSelector}>
@@ -308,6 +348,44 @@ export default function BookPages({
             </View>
           </Modal>
         </GestureRecognizer>
+
+        <Modal
+          visible={chapterModalVisible}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setChapterModalVisible(false)}
+        >
+          <BlurView intensity={10} tint="dark" style={styles.blurContainer}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalChapter}>
+              <TouchableOpacity
+                style={styles.chapterOption}
+                onPress={() => selectChapter("Chapter1")}
+              >
+                <Text style={styles.chapterOptionText}>Chapter 1</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.chapterOption}
+                onPress={() => selectChapter("Chapter2")}
+              >
+                <Text style={styles.chapterOptionText}>Chapter 2</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.chapterOption}
+                onPress={() => selectChapter("Chapter3")}
+              >
+                <Text style={styles.chapterOptionText}>Chapter 3</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.chapterOption, {borderBottomWidth: 0}]}
+                onPress={() => setChapterModalVisible(!chapterModalVisible)}
+              >
+                <Text style={styles.chapterOptionText}>Cancle</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          </BlurView>
+        </Modal>
       </View>
     );
   }
@@ -386,5 +464,44 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     opacity: 0,
+  },
+
+  modalContainer: {
+    flex: 1,
+    position: "relative",
+    top: 100,
+    left: "27%",
+    shadowColor: "#dddbcb",
+    shadowOffset: {
+      width: -8,
+      height: 8,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 10.0,
+    elevation: 10,
+  },
+  modalChapter: {
+    backgroundColor: "#dddbcb",    
+    borderRadius: SIZES.radius,
+    padding: SIZES.padding,
+    height: 200,
+    width: "60%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  chapterOption: {
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.lightGray,
+    paddingVertical: SIZES.padding / 2,
+    width: "100%",
+    alignItems: "center",
+  },
+  chapterOptionText: {
+    ...FONTS.h3,
+    color: COLORS.secondary,
+  },
+  blurContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
