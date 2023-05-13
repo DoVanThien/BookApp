@@ -20,6 +20,7 @@ export default function MyBooksScreen() {
         <FlatList
           data={savedBooks}
           bounces={false}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <BookItem book={item} />}
         />
       </View>

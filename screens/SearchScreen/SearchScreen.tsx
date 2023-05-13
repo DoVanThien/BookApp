@@ -69,6 +69,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
 
 
   function sortAscendingBooksByTitle(books: any) {
+    if (!books) { 
+      return []; 
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (a?.volumeInfo?.title < b?.volumeInfo?.title) {
@@ -93,6 +96,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortDescendingBooksByTitle(books: any) {
+    if (!books) { 
+      return []; 
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (a?.volumeInfo?.title < b?.volumeInfo?.title) {
@@ -117,6 +123,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortAscendingBooksByRating(books: any) {
+    if (!books) { 
+      return []; 
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (!a?.volumeInfo?.averageRating) {
@@ -141,6 +150,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortDescendingBooksByRating(books: any) {
+    if (!books) { 
+      return []; 
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (!a?.volumeInfo?.averageRating) {
@@ -165,6 +177,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortAscendingBooksByPageCount(books: any) {
+    if (!books) { 
+      return []; 
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (!a.volumeInfo.pageCount) {
@@ -189,6 +204,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortDescendingBooksByPageCount(books: any) {
+    if (!books) { 
+      return []; 
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (!a.volumeInfo.pageCount) {
