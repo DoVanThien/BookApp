@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,15 +10,11 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import {
-  FontAwesome,
-  Ionicons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { RootStackScreenProps } from "../types";
 import { COLORS, SIZES, FONTS, Icons } from "../constants";
 import { useMyBooks } from "../context/MyBooksProvider";
+import { ThemeContext } from "../context/ThemeContextProvider";
 
 export default function BookDetail({
   navigation,
@@ -27,6 +23,14 @@ export default function BookDetail({
   navigation: any;
   route: any;
 }) {
+  const { theme } = useContext(ThemeContext);
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.backgroundColor,
+    },
+  });
+
   const [book, setBook] = useState<any>([]);
   const { isBookSaved, onToggleSaved } = useMyBooks();
   const saved = isBookSaved(book);
@@ -264,14 +268,14 @@ export default function BookDetail({
               style={{
                 width: 4,
                 height: "100%",
-                backgroundColor: COLORS.gray1,
+                backgroundColor: theme.secondary,
               }}
             >
               <Animated.View
                 style={{
                   width: 4,
                   height: indicatorSize,
-                  backgroundColor: COLORS.lightGray4,
+                  backgroundColor: theme.gray,
                   transform: [
                     {
                       translateY: Animated.multiply(
@@ -311,13 +315,13 @@ export default function BookDetail({
               <Text
                 style={{
                   ...FONTS.h2,
-                  color: COLORS.white,
+                  color: theme.textColor,
                   marginBottom: SIZES.padding,
                 }}
               >
                 Description
               </Text>
-              <Text style={{ ...FONTS.body2, color: COLORS.lightGray }}>
+              <Text style={{ ...FONTS.body2, color: theme.authorColor }}>
                 {book.description}
               </Text>
             </ScrollView>
@@ -333,7 +337,7 @@ export default function BookDetail({
               onPress={() => onToggleSaved(book)}
               style={{
                 width: 60,
-                backgroundColor: COLORS.secondary,
+                backgroundColor: theme.secondary,
                 marginLeft: SIZES.padding,
                 marginVertical: SIZES.base,
                 borderRadius: SIZES.radius,
@@ -352,7 +356,7 @@ export default function BookDetail({
             <TouchableOpacity
               style={{
                 flex: 1,
-                backgroundColor: COLORS.primary,
+                backgroundColor: theme.primary,
                 marginHorizontal: SIZES.base,
                 marginVertical: SIZES.base,
                 borderRadius: SIZES.radius,
@@ -375,10 +379,3 @@ export default function BookDetail({
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.black,
-  },
-});

@@ -6,26 +6,27 @@ import {
   StyleSheet,
   ScrollView,
   Modal,
-  Pressable,
 } from "react-native";
 import { COLORS, FONTS, Icons, SIZES, TEXT1, TEXT2, TEXT3 } from "../constants";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import React from "react";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
+import AppLoading from "expo-app-loading";
 import * as Brightness from "expo-brightness";
-import OptionSelector from "../components/OptionSelector";
 import { BlurView } from "expo-blur";
 
-import AppLoading from "expo-app-loading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   useFonts,
   BalsamiqSans_400Regular,
 } from "@expo-google-fonts/balsamiq-sans";
 import { SourceSansPro_400Regular_Italic } from "@expo-google-fonts/source-sans-pro";
 import { Inter_400Regular } from "@expo-google-fonts/inter";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import OptionSelector from "../components/OptionSelector";
+import { ThemeContext } from "../context/ThemeContextProvider";
 
 export default function BookPages({
   navigation,
@@ -34,6 +35,120 @@ export default function BookPages({
   navigation: any;
   route: any;
 }) {
+  const { theme } = useContext(ThemeContext);
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.backgroundColor,
+    },
+    header: {
+      paddingTop: SIZES.padding,
+      paddingHorizontal: SIZES.padding,
+    },
+    books: {
+      padding: SIZES.padding,
+      flex: 1,
+    },
+    title: {
+      ...FONTS.h2,
+      color: theme.textColor,
+      maxWidth: 230,
+      paddingLeft: 40,
+    },
+    modal: {
+      flex: 1,
+      justifyContent: "flex-end",
+      shadowColor: theme.gray,
+      shadowOffset: {
+        width: 0,
+        height: -4,
+      },
+      shadowOpacity: 0.7,
+      shadowRadius: 10,
+      elevation: 10,
+    },
+    modalView: {
+      height: 400,
+      backgroundColor: theme.backgroundModal,
+      borderRadius: 20,
+      padding: SIZES.padding,
+      paddingTop: SIZES.padding2,
+    },
+    brightness: {
+      flex: 1,
+      flexDirection: "row",
+      justifyContent: "space-around",
+    },
+    ButtonFontSize: {
+      flex: 1,
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    button: {
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: 1,
+      paddingHorizontal: 40,
+      borderRadius: 8,
+    },
+    FontSelector: {
+      flex: 2,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    backToTopButton: {
+      position: "absolute",
+      right: "48%",
+      bottom: 30,
+      backgroundColor: theme.secondary,
+      color: theme.gray,
+      borderRadius: 16,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      opacity: 0,
+    },
+
+    //modal top
+    modalContainer: {
+      flex: 1,
+      position: "relative",
+      top: 100,
+      left: "27%",
+      shadowColor: theme.gray,
+      shadowOffset: {
+        width: 4,
+        height: 4,
+      },
+      shadowOpacity: 0.5,
+      shadowRadius: 5.0,
+      elevation: 10,
+    },
+    modalChapter: {
+      backgroundColor: theme.backgroundModal,
+      borderRadius: SIZES.radius,
+      padding: SIZES.padding,
+      height: 200,
+      width: "60%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    chapterOption: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLORS.lightGray,
+      paddingVertical: SIZES.padding / 2,
+      width: "100%",
+      alignItems: "center",
+    },
+    chapterOptionText: {
+      ...FONTS.h3,
+      color: COLORS.secondary,
+    },
+    blurContainer: {
+      flex: 1,
+      justifyContent: "center",
+    },
+  });
+
   let [fontsLoaded] = useFonts({
     BalsamiqSans_400Regular,
     SourceSansPro_400Regular_Italic,
@@ -127,7 +242,7 @@ export default function BookPages({
     const offsetY = event.nativeEvent.contentOffset.y;
     if (buttonRef.current) {
       if (offsetY > 0) {
-        buttonRef.current.setNativeProps({ style: { opacity: 0.6 } });
+        buttonRef.current.setNativeProps({ style: { opacity: 0.7 } });
       } else {
         buttonRef.current.setNativeProps({ style: { opacity: 0 } });
       }
@@ -162,7 +277,7 @@ export default function BookPages({
               style={{
                 width: 25,
                 height: 25,
-                tintColor: COLORS.lightGray2,
+                tintColor: theme.gray,
               }}
             />
           </TouchableOpacity>
@@ -174,16 +289,7 @@ export default function BookPages({
               justifyContent: "center",
             }}
           >
-            <Text
-              style={{
-                ...FONTS.h2,
-                color: COLORS.lightGray2,
-                maxWidth: 230,
-                paddingLeft: 40,
-              }}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-            >
+            <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>
               {book.title}
             </Text>
           </View>
@@ -204,7 +310,7 @@ export default function BookPages({
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: COLORS.lightGray2,
+                  tintColor: theme.gray,
                   alignSelf: "flex-end",
                 }}
               />
@@ -220,7 +326,7 @@ export default function BookPages({
                 style={{
                   width: 30,
                   height: 30,
-                  tintColor: COLORS.lightGray2,
+                  tintColor: theme.gray,
                   alignSelf: "flex-end",
                 }}
               />
@@ -230,7 +336,7 @@ export default function BookPages({
 
         <View style={{ flex: 1 }}>
           <View
-            style={{ flex: 1, flexDirection: "row", padding: SIZES.padding }}
+            style={{ flex: 1, padding: SIZES.padding }}
           >
             <ScrollView
               contentContainerStyle={{ paddingRight: 0 }}
@@ -243,7 +349,7 @@ export default function BookPages({
               <Text
                 style={{
                   fontSize: sizeOfText,
-                  color: COLORS.lightGray2,
+                  color: theme.inforColor,
                   fontFamily: selectedOption,
                 }}
               >
@@ -261,9 +367,7 @@ export default function BookPages({
           </View>
         </View>
 
-        <GestureRecognizer
-          onSwipeDown={() => setOptionModalVisible(false)}
-        >
+        <GestureRecognizer onSwipeDown={() => setOptionModalVisible(false)}>
           <Modal
             animationType="slide"
             transparent={true}
@@ -275,13 +379,13 @@ export default function BookPages({
             <View style={styles.modal}>
               <View style={styles.modalView}>
                 <View style={styles.brightness}>
-                  <Ionicons name="md-sunny-outline" size={35} color="#36454f" />
+                  <Ionicons name="md-sunny-outline" size={35} color={theme.gray} />
                   <View
                     style={{ flex: 1, paddingHorizontal: SIZES.padding / 1.5 }}
                   >
                     <Slider
-                      minimumTrackTintColor="#36454f"
-                      maximumTrackTintColor="#fffffa"
+                      minimumTrackTintColor={theme.gray}
+                      maximumTrackTintColor={theme.secondary}
                       maximumValue={1}
                       minimumValue={0}
                       step={0.1}
@@ -299,12 +403,12 @@ export default function BookPages({
                       }}
                     />
                   </View>
-                  <Ionicons name="md-sunny" size={35} color="#36454f" />
+                  <Ionicons name="md-sunny" size={35} color={theme.gray} />
                 </View>
 
                 <View style={styles.ButtonFontSize}>
                   <TouchableOpacity
-                    style={[styles.button, { backgroundColor: "#1E5F74" }]}
+                    style={[styles.button, { backgroundColor: theme.buttonTextSmall }]}
                     onPress={() => {
                       handleSizeOfTextChange(SIZES.body3);
                     }}
@@ -315,7 +419,7 @@ export default function BookPages({
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                    style={[styles.button, { backgroundColor: "#133B5C" }]}
+                    style={[styles.button, { backgroundColor: theme.buttonTextMedium }]}
                     onPress={() => {
                       handleSizeOfTextChange(SIZES.body2);
                     }}
@@ -326,7 +430,7 @@ export default function BookPages({
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                    style={[styles.button, { backgroundColor: "#1D2D50" }]}
+                    style={[styles.button, { backgroundColor: theme.buttonTextLarge }]}
                     onPress={() => {
                       handleSizeOfTextChange(SIZES.body1);
                     }}
@@ -356,152 +460,37 @@ export default function BookPages({
           onRequestClose={() => setChapterModalVisible(false)}
         >
           <BlurView intensity={10} tint="dark" style={styles.blurContainer}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalChapter}>
-              <TouchableOpacity
-                style={styles.chapterOption}
-                onPress={() => selectChapter("Chapter1")}
-              >
-                <Text style={styles.chapterOptionText}>Chapter 1</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.chapterOption}
-                onPress={() => selectChapter("Chapter2")}
-              >
-                <Text style={styles.chapterOptionText}>Chapter 2</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.chapterOption}
-                onPress={() => selectChapter("Chapter3")}
-              >
-                <Text style={styles.chapterOptionText}>Chapter 3</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.chapterOption, {borderBottomWidth: 0}]}
-                onPress={() => setChapterModalVisible(!chapterModalVisible)}
-              >
-                <Text style={styles.chapterOptionText}>Cancle</Text>
-              </TouchableOpacity>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalChapter}>
+                <TouchableOpacity
+                  style={styles.chapterOption}
+                  onPress={() => selectChapter("Chapter1")}
+                >
+                  <Text style={styles.chapterOptionText}>Chapter 1</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.chapterOption}
+                  onPress={() => selectChapter("Chapter2")}
+                >
+                  <Text style={styles.chapterOptionText}>Chapter 2</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.chapterOption}
+                  onPress={() => selectChapter("Chapter3")}
+                >
+                  <Text style={styles.chapterOptionText}>Chapter 3</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.chapterOption, { borderBottomWidth: 0 }]}
+                  onPress={() => setChapterModalVisible(!chapterModalVisible)}
+                >
+                  <Text style={styles.chapterOptionText}>Cancle</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
           </BlurView>
         </Modal>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.black,
-  },
-  header: {
-    paddingTop: SIZES.padding,
-    paddingHorizontal: SIZES.padding,
-  },
-  headerText: {
-    ...FONTS.h2,
-    color: COLORS.white,
-    fontWeight: "700",
-  },
-  books: {
-    padding: SIZES.padding,
-    flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  modal: {
-    flex: 1,
-    justifyContent: "flex-end",
-    shadowColor: "#dddbcb",
-    shadowOffset: {
-      width: 0,
-      height: -10,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 20.0,
-    elevation: 24,
-  },
-  modalView: {
-    height: 400,
-    backgroundColor: "#dddbcb",
-    borderRadius: 20,
-    padding: SIZES.padding,
-    paddingTop: SIZES.padding2,
-  },
-  brightness: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  ButtonFontSize: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 1,
-    paddingHorizontal: 40,
-    borderRadius: 8,
-  },
-  FontSelector: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  backToTopButton: {
-    position: "absolute",
-    right: "48%",
-    bottom: 30,
-    backgroundColor: COLORS.white,
-    color: COLORS.lightGray,
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    opacity: 0,
-  },
-
-  modalContainer: {
-    flex: 1,
-    position: "relative",
-    top: 100,
-    left: "27%",
-    shadowColor: "#dddbcb",
-    shadowOffset: {
-      width: -8,
-      height: 8,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 10.0,
-    elevation: 10,
-  },
-  modalChapter: {
-    backgroundColor: "#dddbcb",    
-    borderRadius: SIZES.radius,
-    padding: SIZES.padding,
-    height: 200,
-    width: "60%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  chapterOption: {
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.lightGray,
-    paddingVertical: SIZES.padding / 2,
-    width: "100%",
-    alignItems: "center",
-  },
-  chapterOptionText: {
-    ...FONTS.h3,
-    color: COLORS.secondary,
-  },
-  blurContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-});

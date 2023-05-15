@@ -6,8 +6,7 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
-import { useMyBooks } from "../context/MyBooksProvider";
+import React, { useContext } from "react";
 import {
   Foundation,
   MaterialIcons,
@@ -16,7 +15,9 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-import Colors from "../constants/Colors";
+import { ThemeContext } from "../context/ThemeContextProvider";
+import { useMyBooks } from "../context/MyBooksProvider";
+
 import { COLORS, FONTS, SIZES } from "../constants";
 
 type BookItemProps = {
@@ -24,6 +25,48 @@ type BookItemProps = {
 };
 
 const BookItem = ({ book }: BookItemProps) => {
+  const { theme } = useContext(ThemeContext);
+  const styles = StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      marginBottom: SIZES.padding,
+      marginHorizontal: SIZES.padding,
+      paddingRight: SIZES.radius,
+      backgroundColor: theme.backgroundColor,
+      borderRadius: 10,
+      shadowColor: theme.gray,
+      shadowOffset: {
+        width: 5,
+        height: 5,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 5.62,
+      elevation: 7,
+    },
+    image: {
+      flex: 1.5,
+      minHeight: 140,
+      minWidth: 110,
+      aspectRatio: 2 / 3,
+      marginRight: 10,
+      borderRadius: 10,
+    },
+    contentContainer: {
+      flex: 4,
+      paddingLeft: SIZES.padding / 2,
+    },
+    bookTitle: {
+      ...FONTS.h2,
+      fontWeight: "600",
+      color: theme.textColor,
+    },
+    bookAuthors: {
+      ...FONTS.h3,
+      fontWeight: "500",
+      color: theme.authorColor,
+    },
+  });
+
   const { isBookSaved, onToggleSaved } = useMyBooks();
   const saved = isBookSaved(book);
   const navigation = useNavigation();
@@ -47,7 +90,7 @@ const BookItem = ({ book }: BookItemProps) => {
           <View
             style={[
               {
-                backgroundColor: "white",
+                backgroundColor: theme.backgroundColor,
               },
               styles.image,
             ]}
@@ -70,37 +113,41 @@ const BookItem = ({ book }: BookItemProps) => {
             alignItems: "center",
           }}
         >
-          <Foundation
-            name="page-multiple"
-            size={15}
-            color={COLORS.lightGray2}
-          />
+          <Foundation name="page-multiple" size={15} color={theme.inforColor} />
           <Text
             style={{
               ...FONTS.body4,
-              color: COLORS.lightGray2,
+              color: theme.inforColor,
               paddingHorizontal: SIZES.radius,
             }}
           >
             {book.pageNumber ? (
               book.pageNumber
             ) : (
-              <MaterialCommunityIcons name="null" size={15} color="white" />
+              <MaterialCommunityIcons
+                name="null"
+                size={15}
+                color={theme.inforColor}
+              />
             )}
           </Text>
 
-          <MaterialIcons name="star-rate" size={15} color={COLORS.lightGray2} />
+          <MaterialIcons name="star-rate" size={15} color={theme.inforColor} />
           <Text
             style={{
               ...FONTS.body4,
-              color: COLORS.lightGray2,
+              color: theme.inforColor,
               paddingHorizontal: SIZES.radius,
             }}
           >
             {book.rating ? (
               book.rating
             ) : (
-              <MaterialCommunityIcons name="null" size={15} color="white" />
+              <MaterialCommunityIcons
+                name="null"
+                size={15}
+                color={theme.inforColor}
+              />
             )}
           </Text>
         </View>
@@ -113,12 +160,12 @@ const BookItem = ({ book }: BookItemProps) => {
                 alignItems: "center",
                 padding: SIZES.base,
                 marginRight: SIZES.base,
-                backgroundColor: COLORS.darkRed,
+                backgroundColor: theme.red,
                 height: 40,
                 borderRadius: SIZES.radius,
               }}
             >
-              <Text style={{ ...FONTS.body3, color: COLORS.lightRed }}>
+              <Text style={{ ...FONTS.body3, color: theme.textRed }}>
                 {book.type}
               </Text>
             </View>
@@ -133,53 +180,11 @@ const BookItem = ({ book }: BookItemProps) => {
         <FontAwesome
           name="bookmark"
           size={24}
-          color={saved ? COLORS.yellow : COLORS.white}
+          color={saved ? COLORS.yellow : theme.secondary}
         />
       </Pressable>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    marginVertical: 10,
-  },
-  image: {
-    flex: 1.5,
-    minHeight: 140,
-    minWidth: 110,
-    aspectRatio: 2 / 3,
-    marginRight: 10,
-    borderRadius: 10,
-  },
-  contentContainer: {
-    flex: 4,
-    paddingLeft: SIZES.padding / 2,
-  },
-  bookTitle: {
-    ...FONTS.h2,
-    fontWeight: "600",
-    color: COLORS.white,
-  },
-  bookAuthors: {
-    ...FONTS.h3,
-    fontWeight: "500",
-    color: COLORS.lightGray4,
-  },
-  button: {
-    backgroundColor: Colors.light.tint,
-    alignSelf: "flex-start",
-    marginTop: "auto",
-    marginVertical: 10,
-    padding: 7,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "600",
-  },
-});
 
 export default BookItem;
