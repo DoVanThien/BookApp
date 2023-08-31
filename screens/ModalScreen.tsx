@@ -9,10 +9,8 @@ import {
 
 import { Text, View } from "../components/Themed";
 import { COLORS, Icons, SIZES } from "../constants";
-import { useEffect, useState, useContext } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ThemeContext } from "../context/ThemeContextProvider";
-import ToggleButton from "../components/ToggleButton";
+import { useEffect, useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ModalScreen(navigation: any) {
   const { theme } = useContext(ThemeContext);

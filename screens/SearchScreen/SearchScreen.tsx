@@ -24,112 +24,9 @@ import { searchQuery } from "./queries";
 import { parseBook } from "../../services/BookService";
 import { COLORS, FONTS, Icons, SIZES, lightTheme } from "../../constants";
 import GestureRecognizer from "react-native-swipe-gestures";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import ToggleButton from "../../components/ToggleButton";
-import { ThemeContext } from "../../context/ThemeContextProvider";
-// import LastReadScreen from "../../components/LastReadScreen";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SearchScreen({ navigation }: { navigation: any }) {
-  const { theme } = useContext(ThemeContext);
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.backgroundColor,
-    },
-    headerContainer: {
-      height: 200,
-      backgroundColor: theme.backgroundColor,
-      paddingHorizontal: SIZES.padding,
-    },
-    header: {
-      flex: 1,
-      flexDirection: "row",
-      paddingTop: SIZES.padding,
-      alignItems: "center",
-      backgroundColor: theme.backgroundColor,
-    },
-    fieldInput: {
-      flex: 1,
-      flexDirection: "row",
-      alignItems: "center",
-      paddingHorizontal: SIZES.radius,
-      marginVertical: SIZES.padding,
-      backgroundColor: theme.backgroundInputColor,
-      borderWidth: 1,
-      borderColor: theme.backgroundInputColor,
-      borderRadius: 80,
-    },
-    input: {
-      flex: 1,
-      flexDirection: "row",
-      alignItems: "center",
-      paddingLeft: 13,
-      backgroundColor: theme.backgroundInputColor,
-    },
-    boxInput: {
-      flex: 1,
-      color: theme.textColor,
-      fontSize: 18,
-    },
-    tabs: {
-      flexDirection: "row",
-      justifyContent: "space-around",
-      alignItems: "center",
-      marginHorizontal: SIZES.padding,
-      paddingVertical: SIZES.padding / 2,
-      marginBottom: SIZES.padding / 2, 
-      backgroundColor: theme.backgroundColor,
-    },
-    buttonTabs1: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      padding: SIZES.base,
-      marginRight: SIZES.base,
-      backgroundColor: theme.primary,
-      height: 40,
-      borderRadius: SIZES.radius,
-    },
-    buttonTabs2: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      padding: SIZES.base,
-      marginRight: SIZES.base,
-      backgroundColor: theme.secondary,
-      height: 40,
-      borderRadius: SIZES.radius,
-    },
-    textTabs1: {
-      fontWeight: "700",
-      color: COLORS.white,
-    },
-    textTabs2: {
-      fontWeight: "700",
-      color: theme.gray,
-    },
-
-    modal: {
-      flex: 1,
-      backgroundColor: theme.backgroundColor,
-    },
-    modalView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: theme.backgroundModal,
-      borderRadius: 20,
-      padding: SIZES.padding,
-      paddingTop: SIZES.padding2,
-    },
-    textFilter: {
-      fontSize: 23,
-      fontWeight: "800",
-      lineHeight: 40,
-      color: theme.textColor,
-    },
-  });
-
   const [search, setSearch] = useState("");
   const [input, setInput] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -353,8 +250,7 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
               </Text>
             </View>
           </View>
-          {/* <ToggleButton /> */}
-          {/* button avatar */}
+
           <TouchableOpacity
             style={{
               height: 60,

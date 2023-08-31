@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add @expo/webpack-config@^18.0.1
+  /usr/local/bin/node /usr/local/bin/yarnpkg add @react-native-community/picker
 
 PATH: 
-  /Users/thiendo/Library/Android/sdk/tools:/Users/thiendo/Library/Android/sdk/tools/bin:/Users/thiendo/Library/Android/sdk/platform-tools:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/thiendo/Library/Android/sdk/tools:/Users/thiendo/Library/Android/sdk/tools/bin:/Users/thiendo/Library/Android/sdk/platform-tools
+  /Users/thiendo/Russia/BooksApp_Diplom/BooksApp/node_modules/.bin:/Users/thiendo/Russia/BooksApp_Diplom/BooksApp/node_modules/.bin:/Users/thiendo/Russia/BooksApp_Diplom/node_modules/.bin:/Users/thiendo/Russia/node_modules/.bin:/Users/thiendo/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/usr/local/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/Users/thiendo/Library/Android/sdk/tools:/Users/thiendo/Library/Android/sdk/tools/bin:/Users/thiendo/Library/Android/sdk/platform-tools:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/thiendo/Library/Android/sdk/tools:/Users/thiendo/Library/Android/sdk/tools/bin:/Users/thiendo/Library/Android/sdk/platform-tools
 
 Yarn version: 
   1.22.19

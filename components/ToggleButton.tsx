@@ -25,8 +25,6 @@ const ToggleButton = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 2.5,
-    // alignItems: "center",
-    // justifyContent: "center",
   },
 });
 
