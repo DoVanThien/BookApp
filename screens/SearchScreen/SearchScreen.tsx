@@ -1,6 +1,5 @@
 import {
   ActivityIndicator,
-  Button,
   FlatList,
   TextInput,
   TouchableOpacity,
@@ -8,6 +7,7 @@ import {
   SafeAreaView,
   StatusBar,
   Modal,
+  StyleSheet,
 } from "react-native";
 import { IconButton } from "@react-native-material/core";
 import {
@@ -19,15 +19,117 @@ import {
 import { Text, View } from "../../components/Themed";
 import { useLazyQuery } from "@apollo/client";
 import BookItem from "../../components/BookItem";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { searchQuery } from "./queries";
 import { parseBook } from "../../services/BookService";
-import styles from "./styles";
-import { COLORS, FONTS, Icons, SIZES } from "../../constants";
+import { COLORS, FONTS, Icons, SIZES, lightTheme } from "../../constants";
 import GestureRecognizer from "react-native-swipe-gestures";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import ToggleButton from "../../components/ToggleButton";
+import { ThemeContext } from "../../context/ThemeContextProvider";
+// import LastReadScreen from "../../components/LastReadScreen";
 
 export default function SearchScreen({ navigation }: { navigation: any }) {
+  const { theme } = useContext(ThemeContext);
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.backgroundColor,
+    },
+    headerContainer: {
+      height: 200,
+      backgroundColor: theme.backgroundColor,
+      paddingHorizontal: SIZES.padding,
+    },
+    header: {
+      flex: 1,
+      flexDirection: "row",
+      paddingTop: SIZES.padding,
+      alignItems: "center",
+      backgroundColor: theme.backgroundColor,
+    },
+    fieldInput: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: SIZES.radius,
+      marginVertical: SIZES.padding,
+      backgroundColor: theme.backgroundInputColor,
+      borderWidth: 1,
+      borderColor: theme.backgroundInputColor,
+      borderRadius: 80,
+    },
+    input: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      paddingLeft: 13,
+      backgroundColor: theme.backgroundInputColor,
+    },
+    boxInput: {
+      flex: 1,
+      color: theme.textColor,
+      fontSize: 18,
+    },
+    tabs: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      alignItems: "center",
+      marginHorizontal: SIZES.padding,
+      paddingVertical: SIZES.padding / 2,
+      marginBottom: SIZES.padding / 2, 
+      backgroundColor: theme.backgroundColor,
+    },
+    buttonTabs1: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: SIZES.base,
+      marginRight: SIZES.base,
+      backgroundColor: theme.primary,
+      height: 40,
+      borderRadius: SIZES.radius,
+    },
+    buttonTabs2: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: SIZES.base,
+      marginRight: SIZES.base,
+      backgroundColor: theme.secondary,
+      height: 40,
+      borderRadius: SIZES.radius,
+    },
+    textTabs1: {
+      fontWeight: "700",
+      color: COLORS.white,
+    },
+    textTabs2: {
+      fontWeight: "700",
+      color: theme.gray,
+    },
+
+    modal: {
+      flex: 1,
+      backgroundColor: theme.backgroundColor,
+    },
+    modalView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: theme.backgroundModal,
+      borderRadius: 20,
+      padding: SIZES.padding,
+      paddingTop: SIZES.padding2,
+    },
+    textFilter: {
+      fontSize: 23,
+      fontWeight: "800",
+      lineHeight: 40,
+      color: theme.textColor,
+    },
+  });
+
   const [search, setSearch] = useState("");
   const [input, setInput] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -37,23 +139,40 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
 
   const [sortBy, setSortBy] = useState("");
 
-  // const [profile1, setProfile1] = useState<string>("");
-  // const [profile2, setProfile2] = useState<string>("");  
-  // const getFirstName = async (): Promise<string | null> => {
-  //   try {
-  //     const firstName = await AsyncStorage.getItem('firstName');
-  //     return firstName;
-  //   } catch (error) {
-  //     console.log(error);
-  //     return null;
-  //   }
-  // };
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [reloadTime, setReloadTime] = useState(0);
 
-  // getFirstName().then((firstName) => {
-  //   console.log(`The first name is: ${firstName}`);
-  // });
+  useEffect(() => {
+    async function getData() {
+      try {
+        const firstNameValue = await AsyncStorage.getItem("userFirstName");
+        const lastNameValue = await AsyncStorage.getItem("userLastName");
+
+        if (firstNameValue !== null) {
+          setFirstName(firstNameValue);
+        }
+
+        if (lastNameValue !== null) {
+          setLastName(lastNameValue);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    getData();
+    const intervalId = setInterval(() => {
+      setReloadTime(Date.now());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [reloadTime]);
 
   function sortAscendingBooksByTitle(books: any) {
+    if (!books) {
+      return [];
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (a?.volumeInfo?.title < b?.volumeInfo?.title) {
@@ -78,6 +197,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortDescendingBooksByTitle(books: any) {
+    if (!books) {
+      return [];
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (a?.volumeInfo?.title < b?.volumeInfo?.title) {
@@ -102,6 +224,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortAscendingBooksByRating(books: any) {
+    if (!books) {
+      return [];
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (!a?.volumeInfo?.averageRating) {
@@ -126,6 +251,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortDescendingBooksByRating(books: any) {
+    if (!books) {
+      return [];
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (!a?.volumeInfo?.averageRating) {
@@ -150,6 +278,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortAscendingBooksByPageCount(books: any) {
+    if (!books) {
+      return [];
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (!a.volumeInfo.pageCount) {
@@ -174,6 +305,9 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
   }
 
   function sortDescendingBooksByPageCount(books: any) {
+    if (!books) {
+      return [];
+    }
     if (provider == "googleBooksSearch") {
       return [...books].sort((a, b) => {
         if (!a.volumeInfo.pageCount) {
@@ -199,32 +333,32 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <View style={styles.header}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            paddingHorizontal: SIZES.padding,
-            paddingTop: SIZES.padding / 2,
-            alignItems: "center",
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <View style={{ marginRight: SIZES.padding }}>
-              <Text style={{ ...FONTS.h3, color: COLORS.white }}>
+      <StatusBar
+        barStyle={theme === lightTheme ? "dark-content" : "light-content"}
+      />
+      <View style={styles.headerContainer}>
+        <View style={styles.header}>
+          <View style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
+            <View
+              style={{
+                marginRight: SIZES.padding,
+                backgroundColor: theme.backgroundColor,
+              }}
+            >
+              <Text style={{ ...FONTS.h3, color: theme.textColor }}>
                 Good Morning
               </Text>
-              <Text style={{ ...FONTS.h2, color: COLORS.white }}>
-                Do Thien
+              <Text style={{ ...FONTS.h1, color: theme.textColor }}>
+                {firstName} {lastName}
               </Text>
             </View>
           </View>
-
+          {/* <ToggleButton /> */}
+          {/* button avatar */}
           <TouchableOpacity
             style={{
-              height: 50,
-              width: 50,
+              height: 60,
+              width: 60,
               paddingLeft: 3,
               paddingRight: SIZES.radius,
             }}
@@ -236,14 +370,14 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
                 alignItems: "center",
               }}
             >
-              <View>
+              <View style={{ backgroundColor: theme.backgroundColor }}>
                 <Image
                   source={Icons.image}
                   resizeMode="cover"
                   style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 20,
+                    width: 55,
+                    height: 55,
+                    borderRadius: 22,
                   }}
                 />
               </View>
@@ -256,8 +390,8 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
             <TextInput
               value={search}
               onChangeText={setSearch}
-              placeholder="Search"
-              placeholderTextColor={"white"}
+              placeholder="Search a book or author"
+              placeholderTextColor={theme.gray}
               style={styles.boxInput}
             />
             {search !== "" && (
@@ -270,7 +404,7 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
                 <MaterialCommunityIcons
                   name="close-thick"
                   size={15}
-                  color={"white"}
+                  color={theme.gray}
                 />
               </TouchableOpacity>
             )}
@@ -281,7 +415,7 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
               <MaterialCommunityIcons
                 name="magnify"
                 size={35}
-                color={"white"}
+                color={theme.gray}
               />
             }
             onPress={() => {
@@ -293,17 +427,25 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
       </View>
 
       {/* body */}
-      <View>{!input && <></>}</View>
+      {!input && (
+      <>
+      {/* <Text style={{color: "black"}}>list</Text>
+      <FlatList
+          data={lastReadBooks}
+          renderItem={({ item }) => <BookItem book={item} />}
+        /> */}
+      </>)}
 
       {input && (
         <>
           <View style={styles.tabs}>
-            <View
+            <TouchableOpacity
               style={
                 provider === "googleBooksSearch"
                   ? styles.buttonTabs1
                   : styles.buttonTabs2
               }
+              onPress={() => setProvider("googleBooksSearch")}
             >
               <Text
                 style={
@@ -311,18 +453,18 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
                     ? styles.textTabs1
                     : styles.textTabs2
                 }
-                onPress={() => setProvider("googleBooksSearch")}
               >
                 Google Book
               </Text>
-            </View>
+            </TouchableOpacity>
 
-            <View
+            <TouchableOpacity
               style={
                 provider === "openLibrarySearch"
                   ? styles.buttonTabs1
                   : styles.buttonTabs2
               }
+              onPress={() => setProvider("openLibrarySearch")}
             >
               <Text
                 style={
@@ -330,18 +472,17 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
                     ? styles.textTabs1
                     : styles.textTabs2
                 }
-                onPress={() => setProvider("openLibrarySearch")}
               >
                 Open Library
               </Text>
-            </View>
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Ionicons
                 style={{ paddingLeft: SIZES.radius / 2 }}
                 name="filter"
                 size={30}
-                color="white"
+                color={theme.gray}
               />
             </TouchableOpacity>
           </View>
@@ -353,13 +494,14 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundColor: theme.backgroundColor,
               }}
             >
-              <FontAwesome5 name="sad-cry" size={100} color="white" />
+              <FontAwesome5 name="sad-cry" size={100} color={theme.textColor} />
               <Text
                 style={{
                   ...FONTS.h2,
-                  color: COLORS.white,
+                  color: theme.textColor,
                   paddingTop: SIZES.padding,
                 }}
               >
@@ -368,7 +510,7 @@ export default function SearchScreen({ navigation }: { navigation: any }) {
             </View>
           )}
 
-          <View style={{ marginHorizontal: SIZES.padding, flex: 1 }}>
+          <View style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
             <FlatList
               data={
                 sortBy === "titleA-Z"

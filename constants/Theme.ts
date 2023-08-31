@@ -6,11 +6,13 @@ export const COLORS = {
     // colors
     black: "#15141a",
     white: "#FFFFFF",
-    yellow: "#FEC260",
+    yellow: "#F7C04A",
     lightGray: "#64676D",
+    lightGray4: '#7D7E84',
+
     lightGray2: "#EFEFF0",
     lightGray3: '#D4D5D6',
-    lightGray4: '#7D7E84',
+  
     gray: "#2D3038",
     gray1: "#282C35",
     darkRed: "#31262F",
@@ -21,6 +23,40 @@ export const COLORS = {
     lightGreen: "#31Ad66",
 
 };
+
+export const lightTheme = {
+    primary: "#ffb26e",
+    secondary: "#EBEBEB",
+    backgroundColor: '#FBFBFB',
+    textColor: '#000',
+    backgroundInputColor: "#eee",
+    gray: "#64676D",
+    authorColor: "#aaa",
+    inforColor: "#888",
+    red: "#FF9F9F",
+    textRed: "#EF4B4B",
+    backgroundModal: "#FFFBF5",
+    buttonTextSmall:"#FFC884",
+    buttonTextMedium: "#FFC27E",
+    buttonTextLarge: "#FFBA76"
+  };
+  
+  export const darkTheme = {
+    primary: "#F96D41",
+    secondary: "#D4D5D6",
+    backgroundColor: '#000',
+    textColor: '#fff',
+    backgroundInputColor: "#252525",
+    gray: "#7D7E84",
+    authorColor: "#777", 
+    inforColor: "#d4d4d4",
+    red: "#31262F",
+    textRed: "#C5505E",
+    backgroundModal: "#F4EEE0",
+    buttonTextSmall:"#ff8357",
+    buttonTextMedium: "#ff7d51",
+    buttonTextLarge: "#ff7549"
+  };
 
 export const SIZES = {
     // global sizes
@@ -55,6 +91,6 @@ export const FONTS = {
     body4: {  fontSize: SIZES.body4, lineHeight: 22 },
 };
 
-const appTheme = { COLORS, SIZES, FONTS };
+const appTheme = { COLORS, SIZES, FONTS, lightTheme, darkTheme };
 
 export default appTheme;

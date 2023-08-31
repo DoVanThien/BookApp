@@ -22,6 +22,8 @@ import SearchScreen from "../screens/SearchScreen/SearchScreen";
 import MyBooksScreen from "../screens/MyBooksScreen/MyBooksScreen";
 import BookDetail from "../screens/BookDetail";
 import BookPages from "../screens/BookPages";
+import { ThemeContext } from "../context/ThemeContextProvider";
+import { useContext } from "react";
 
 import {
   RootStackParamList,
@@ -29,16 +31,18 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import { darkTheme, lightTheme } from "../constants";
 
 export default function Navigation({
   colorScheme,
 }: {
   colorScheme: ColorSchemeName;
 }) {
+  const { theme } = useContext(ThemeContext);
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === "light" ? DarkTheme : DefaultTheme}
+      theme={theme === darkTheme ? DarkTheme : DefaultTheme}
     >
       <RootNavigator />
     </NavigationContainer>
@@ -77,10 +81,10 @@ function RootNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-      name="BookPages"
-      component={BookPages}
-      options={{ headerShown: false }}
-    />
+        name="BookPages"
+        component={BookPages}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -92,8 +96,13 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
+  let colorScheme = useColorScheme();
+  const { theme } = useContext(ThemeContext);
+  if (theme === lightTheme) {
+    colorScheme = "light";
+  } else if (theme === darkTheme) {
+    colorScheme = "dark";
+  }
   return (
     <BottomTab.Navigator
       initialRouteName="Search"

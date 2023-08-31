@@ -1,13 +1,36 @@
-import React from "react";
-import { SafeAreaView, Text } from "react-native";
-import { FlatList, StyleSheet } from "react-native";
+import React, { useContext } from "react";
+import { SafeAreaView, Text, FlatList, StyleSheet } from "react-native";
 import BookItem from "../../components/BookItem";
 import { View } from "../../components/Themed";
+import { SIZES, FONTS } from "../../constants";
 
 import { useMyBooks } from "../../context/MyBooksProvider";
-import styles from "./styles";
+import { ThemeContext } from "../../context/ThemeContextProvider";
 
 export default function MyBooksScreen() {
+  const { theme } = useContext(ThemeContext);
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.backgroundColor,
+    },
+    header: {
+      paddingTop: SIZES.padding,
+      paddingHorizontal: SIZES.padding,
+      backgroundColor: theme.backgroundColor,
+    },
+    headerText: {
+      ...FONTS.h2,
+      color: theme.textColor,
+      fontWeight: "700",
+    },
+    books: {
+      flex: 1,
+      paddingTop: SIZES.padding,
+      backgroundColor: theme.backgroundColor,
+    },
+  });
+
   const { savedBooks } = useMyBooks();
   console.log(savedBooks);
 
@@ -20,6 +43,7 @@ export default function MyBooksScreen() {
         <FlatList
           data={savedBooks}
           bounces={false}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <BookItem book={item} />}
         />
       </View>

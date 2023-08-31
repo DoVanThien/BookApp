@@ -6,6 +6,8 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import MyBooksProvider from "./context/MyBooksProvider";
+import { ThemeProvider } from './context/ThemeContextProvider';
+import { lightTheme } from './constants/Theme';
 
 const API_KEY =
   "tocancipa::stepzen.net+1000::354d1ea945ad0ab1c1fd52bdceb698321cdf54720e79e51e0c1700ac7eeabb68";
@@ -28,9 +30,11 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <ApolloProvider client={client}>
+        <ThemeProvider initialTheme={lightTheme}>
           <MyBooksProvider>
             <Navigation colorScheme={colorScheme} />
           </MyBooksProvider>
+          </ThemeProvider>
         </ApolloProvider>
         <StatusBar />
       </SafeAreaProvider>
